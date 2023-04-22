@@ -18,7 +18,7 @@ internal sealed class BattleshipGame
             Input = gameConsole,
             Output = gameConsole
         };
-        _gameState = new Starting();
+        _gameState = new Welcome();
     }
 
     public void Move()

@@ -18,6 +18,8 @@ internal sealed class GameConsole : IGameInput, IGameOutput
 
     public void PrintGrid(GridField[,] grid)
     {
+        PrintEmptyLine();
+
         var columnsCount = grid.GetLength(0);
         var rowsCount = grid.GetLength(1);
 
@@ -32,6 +34,8 @@ internal sealed class GameConsole : IGameInput, IGameOutput
             }
             PrintRowEnd();
         }
+
+        PrintEmptyLine();
     }
 
     private static void PrintField(GridField field)

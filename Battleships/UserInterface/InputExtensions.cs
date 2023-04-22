@@ -5,10 +5,9 @@ public static class InputExtensions
     public static bool? AsYesNo(this string? input)
     {
         input = input?.ToUpperInvariant();
+
         if (input != "Y" && input != "N")
-        {
             return null;
-        }
 
         return input == "Y";
     }

@@ -23,7 +23,6 @@ internal sealed class Shooting : IGameState
             return new InvalidCoordinates();
 
         context.Output.PrintMessage(result.ToMessage());
-        context.Output.PrintEmptyLine();
 
         return context.Game.IsFinished 
             ? new Finished() 
