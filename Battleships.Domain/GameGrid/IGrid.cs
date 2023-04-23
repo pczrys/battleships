@@ -8,7 +8,7 @@ public interface IGrid
 
     void SetShip(IShip ship);
 
-    GridField SetShot(GridField field);
+    GridField SetShot(GridCoordinates coordinates);
 
     int Size { get; }
 }

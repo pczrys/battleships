@@ -1,10 +1,12 @@
 using Battleships.Domain;
+using Battleships.Domain.GameGrid;
 using Battleships.Domain.ShotResults;
 using Battleships.Game;
 using Battleships.GameStates;
 using Battleships.UserInterface;
 using Moq;
 using Shouldly;
+using System.Data.Common;
 
 namespace Battleships.Tests.GameStates;
 
@@ -28,31 +30,31 @@ public class ShootingTests
     {
         const char column = 'Y';
         const int row = 110;
-        _game.Setup(g => g.Shoot(column, row)).Returns(new InvalidCoordinatesResult());
+        _game.Setup(g => g.Shoot(new Coordinates(column, row))).Returns(new InvalidCoordinatesResult());
 
-        new Shooting(column, row).Move(_gameContext)
+        new Shooting(new Coordinates(column, row)).Move(_gameContext)
             .ShouldBeOfType<InvalidCoordinates>();
     }
 
     [Fact]
     public void Move_WhenGameFinished_ReturnsFinished()
     {
-        _game.Setup(g => g.Shoot(It.IsAny<char>(), It.IsAny<int>()))
+        _game.Setup(g => g.Shoot(It.IsAny<Coordinates>()))
             .Returns(new HitResult(Mock.Of<IShip>()));
         _game.Setup(g => g.IsFinished).Returns(true);
 
-        new Shooting('Y', 110).Move(_gameContext)
+        new Shooting(new Coordinates('Y', 110)).Move(_gameContext)
             .ShouldBeOfType<Finished>();
     }
 
     [Fact]
     public void Move_WhenGameHasNotFinished_ReturnsWaitForMove()
     {
-        _game.Setup(g => g.Shoot(It.IsAny<char>(), It.IsAny<int>()))
+        _game.Setup(g => g.Shoot(It.IsAny<Coordinates>()))
             .Returns(new MissResult());
         _game.Setup(g => g.IsFinished).Returns(false);
 
-        new Shooting('I', 10).Move(_gameContext)
+        new Shooting(new Coordinates('I', 10)).Move(_gameContext)
             .ShouldBeOfType<WaitForMove>();
     }
 }

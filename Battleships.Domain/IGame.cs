@@ -9,6 +9,6 @@ public interface IGame
 
     bool IsFinished { get; }
 
-    IShotResult Shoot(char column, int row);
+    IShotResult Shoot(Coordinates coordinates);
 
 }

@@ -17,10 +17,10 @@ public class ShipTests
     [Fact]
     public void AddFieldPoints_AddsField()
     {
-        _ship.AddGridField(new GridField(1, 1));
+        _ship.AddGridField(new GridField(new GridCoordinates(1, 1)));
 
         _ship.GridFields.ShouldBeEquivalentTo(
-            new List<GridField> { new(1, 1) });
+            new List<GridField> { new(new GridCoordinates(1, 1)) });
     }
 
     [Theory]
@@ -39,31 +39,35 @@ public class ShipTests
     [Fact]
     public void Hit_WhenAnyFieldsIntact_UpdatesHitField()
     {
-        var hitField = new GridField(1, 2);
+        var hitField = new GridField(new GridCoordinates(1, 2));
 
-        _ship.AddGridField(new GridField(1, 1));
+        _ship.AddGridField(new GridField(new GridCoordinates(1, 1)));
         _ship.AddGridField(hitField);
 
         _ship.Hit(hitField);
 
         _ship.GridFields.ShouldBeEquivalentTo(
-            new List<GridField> { new(1, 1), new(1,2){State = GridFieldState.Hit} });
+            new List<GridField>
+            {
+                new(new GridCoordinates(1, 1)),
+                new(new GridCoordinates(1, 2)) { State = GridFieldState.Hit }
+            });
     }
 
     [Fact]
     public void Hit_WhenNoFieldsIntact_UpdatesFieldsToSunk()
     {
-        var hitField = new GridField(1, 2);
+        var hitField = new GridField(new GridCoordinates(1, 2));
 
-        _ship.AddGridField(new GridField(1, 1){State = GridFieldState.Hit});
+        _ship.AddGridField(new GridField(new GridCoordinates(1, 1)) { State = GridFieldState.Hit });
         _ship.AddGridField(hitField);
 
         _ship.Hit(hitField);
 
         _ship.GridFields.ShouldBeEquivalentTo(
             new List<GridField> {
-                new(1, 1) {State = GridFieldState.Sunk}, 
-                new(1, 2) { State = GridFieldState.Sunk } });
+                new(new GridCoordinates(1, 1)) {State = GridFieldState.Sunk},
+                new(new GridCoordinates(1, 2)) { State = GridFieldState.Sunk } });
     }
 
     [Fact]
@@ -84,9 +88,9 @@ public class ShipTests
         {
             new GridField[]
             {
-                new(1, 1) { State = GridFieldState.Sunk },
-                new(2, 1) { State = GridFieldState.Sunk },
-                new(3, 1) { State = GridFieldState.Sunk }
+                new(new GridCoordinates(1, 1)) { State = GridFieldState.Sunk },
+                new(new GridCoordinates(2, 1)) { State = GridFieldState.Sunk },
+                new(new GridCoordinates(3, 1)) { State = GridFieldState.Sunk }
             },
             true
         };
@@ -94,8 +98,8 @@ public class ShipTests
         {
             new GridField[]
             {
-                new(1, 1) { State = GridFieldState.Hit },
-                new(1, 2) { State = GridFieldState.Intact }
+                new(new GridCoordinates(1, 1)) { State = GridFieldState.Hit },
+                new(new GridCoordinates(1, 2)) { State = GridFieldState.Intact }
             },
             false
         };
@@ -103,8 +107,8 @@ public class ShipTests
         {
             new GridField[]
             {
-                new(1, 1) { State = GridFieldState.Intact },
-                new(1, 2) { State = GridFieldState.Intact }
+                new(new GridCoordinates(1, 1)) { State = GridFieldState.Intact },
+                new(new GridCoordinates(1, 2)) { State = GridFieldState.Intact }
             },
             false
         };

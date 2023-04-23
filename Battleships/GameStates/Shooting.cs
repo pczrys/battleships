@@ -1,4 +1,6 @@
-﻿using Battleships.Domain.ShotResults;
+﻿using Battleships.Domain;
+using Battleships.Domain.GameGrid;
+using Battleships.Domain.ShotResults;
 using Battleships.Game;
 using Battleships.UserInterface;
 
@@ -6,18 +8,16 @@ namespace Battleships.GameStates;
 
 internal sealed class Shooting : IGameState
 {
-    private readonly char _column;
-    private readonly int _row;
+    private readonly Coordinates _coordinates;
 
-    public Shooting(char column, int row)
+    public Shooting(Coordinates coordinates)
     {
-        _column = column;
-        _row = row;
+        _coordinates = coordinates;
     }
 
     public IGameState Move(GameContext context)
     {
-        var result = context.Game.Shoot(_column, _row);
+        var result = context.Game.Shoot(_coordinates);
 
         if (result is InvalidCoordinatesResult)
             return new InvalidCoordinates();

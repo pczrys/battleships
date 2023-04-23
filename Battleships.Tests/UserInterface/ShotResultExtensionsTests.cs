@@ -18,10 +18,10 @@ public class GridFieldExtensionsTests
 
     public static IEnumerable<object[]> GridFieldTestData()
     {
-        yield return new object[] { new GridField(1,1){State = GridFieldState.Hit}, "X" };
-        yield return new object[] { new GridField(2,1){State = GridFieldState.Missed}, "O" };
-        yield return new object[] { new GridField(1,4){State = GridFieldState.Sunk}, "S" };
-        yield return new object[] { new GridField(3,6){State = GridFieldState.Intact}, "_" };
+        yield return new object[] { new GridField(new Coordinates('A', 2)) { State = GridFieldState.Hit }, "X" };
+        yield return new object[] { new GridField(new Coordinates('G', 6)) { State = GridFieldState.Missed }, "O" };
+        yield return new object[] { new GridField(new Coordinates('D', 7)) { State = GridFieldState.Sunk }, "S" };
+        yield return new object[] { new GridField(new Coordinates('C', 4)) { State = GridFieldState.Intact }, "_" };
     }
 
 }

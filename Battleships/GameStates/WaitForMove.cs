@@ -12,9 +12,9 @@ internal sealed class WaitForMove : IGameState
         context.Output.PrintMessage("Enter shot coordinates:");
 
         var coordinates = context.Input.Read().AsCoordinates();
-        if (coordinates == null)
-            return new InvalidCoordinates();
-
-        return new Shooting(coordinates.Value.Column, coordinates.Value.Row);
+        
+        return coordinates == null 
+            ? new InvalidCoordinates() 
+            : new Shooting(coordinates.Value);
     }
 }

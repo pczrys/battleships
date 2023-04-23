@@ -41,14 +41,14 @@ public class GameTests
     public void Shoot_WhenHit_ReturnsHitResult()
     {
         var ship = new Ship("some-name", 1);
-        _grid.Setup(g => g.SetShot(It.IsAny<GridField>()))
-            .Returns(new GridField(1, 1)
+        _grid.Setup(g => g.SetShot(It.IsAny<GridCoordinates>()))
+            .Returns(new GridField(new GridCoordinates(0,0))
         {
             State = GridFieldState.Hit,
             Ship = ship
         });
 
-        var result = _game.Shoot('A', 1);
+        var result = _game.Shoot(new Coordinates('A', 1));
         result.ShouldBeOfType<HitResult>()
             .Ship.ShouldBe(ship);
     }
@@ -56,13 +56,13 @@ public class GameTests
     [Fact]
     public void Shoot_WhenMissed_ReturnsMissedResult()
     {
-        _grid.Setup(g => g.SetShot(It.IsAny<GridField>()))
-            .Returns(new GridField(1, 10)
+        _grid.Setup(g => g.SetShot(It.IsAny<GridCoordinates>()))
+            .Returns(new GridField(new GridCoordinates(0, 9))
             {
                 State = GridFieldState.Missed,
             });
 
-        var result = _game.Shoot('A', 10);
+        var result = _game.Shoot(new Coordinates('A', 10));
         result.ShouldBeOfType<MissResult>();
     }
 
@@ -70,26 +70,22 @@ public class GameTests
     public void Shoot_WhenSunk_ReturnsSunkResult()
     {
         var ship = new Ship("some-name", 2);
-        _grid.Setup(g => g.SetShot(It.IsAny<GridField>()))
-            .Returns(new GridField(2, 2)
+        _grid.Setup(g => g.SetShot(It.IsAny<GridCoordinates>()))
+            .Returns(new GridField(new GridCoordinates(1, 1))
             {
                 State = GridFieldState.Sunk,
                 Ship = ship
             });
 
-        var result = _game.Shoot('B', 2);
+        var result = _game.Shoot(new Coordinates('B', 2));
         result.ShouldBeOfType<SunkResult>()
             .Ship.ShouldBe(ship);
     }
 
-    [Theory]
-    [InlineData('K', 1)]
-    [InlineData('A', 11)]
-    [InlineData('@', 1)]
-    [InlineData('C', 0)]
-    public void Shoot_WhenCoordinatesInvalid_ReturnsInvalidCoordinatesResult(char column, int row)
+    [Fact]
+    public void Shoot_WhenCoordinatesInvalid_ReturnsInvalidCoordinatesResult()
     {
-        var result = _game.Shoot(column, row);
+        var result = _game.Shoot(new Coordinates('X', 12));
         result.ShouldBeOfType<InvalidCoordinatesResult>();
     }
 }

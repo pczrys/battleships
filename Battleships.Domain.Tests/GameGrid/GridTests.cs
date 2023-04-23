@@ -30,15 +30,15 @@ public class GridTests
             .ToArray().ShouldBeEquivalentTo(
                 new[]
                 {
-                    new GridField(1, 1) { Ship = ship },
-                    new GridField(2, 1) { Ship = ship }
+                    new GridField(new GridCoordinates(1, 1)) { Ship = ship },
+                    new GridField(new GridCoordinates(2, 1)) { Ship = ship }
                 });
     }
 
     [Fact]
     public void SetShot_WhenNoShipAtField_ChangesStateToMissed()
     {
-        _grid.SetShot(new GridField(1, 5))
+        _grid.SetShot(new GridCoordinates(1, 4))
             .State.ShouldBe(GridFieldState.Missed);
     }
 
@@ -52,11 +52,11 @@ public class GridTests
         ship.Setup(s => s.BlocksNumber).Returns(1);
         _grid.SetShip(ship.Object);
 
-        _grid.SetShot(new GridField(5, 5));
+        _grid.SetShot(new GridCoordinates(4, 4));
 
         ship.Verify(s => s.Hit(
                 It.Is<GridField>(
-                    f => f.Column == 4 && f.Row == 4)),
+                    f => f.Coordinates == new GridCoordinates(4,4))),
             Times.Once);
     }
 }

@@ -2,22 +2,16 @@
 
 public record GridField
 {
-    private const int AInAscii = 65;
     private IShip? _ship;
 
-    public GridField(int column, int row)
-    {
-        (Column, Row) = (column - 1, row - 1);
-        State = GridFieldState.Intact;
-    }
-
-    public GridField(char column, int row)
-        : this(column - AInAscii + 1, row)
+    public GridField(Coordinates coordinates)
+        : this((GridCoordinates)coordinates)
     { }
 
-    public int Column { get; }
-
-    public int Row { get; }
+    internal GridField(GridCoordinates coordinates)
+    {
+        Coordinates = coordinates;
+    }
 
     public GridFieldState State { get; set; }
 
@@ -30,6 +24,8 @@ public record GridField
             _ship?.AddGridField(this);
         }
     }
+
+    internal GridCoordinates Coordinates { get; }
 
     public bool IsEmpty => Ship == null;
 

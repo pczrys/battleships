@@ -15,7 +15,7 @@ public sealed class Grid : IGrid
         {
             for (var j = 0; j < Size; j++)
             {
-                Fields[i, j] = new GridField(i + 1, j + 1);
+                Fields[i, j] = new GridField(new GridCoordinates(i, j));
             }
         }
     }
@@ -48,9 +48,9 @@ public sealed class Grid : IGrid
         }
     }
 
-    public GridField SetShot(GridField field)
+    public GridField SetShot(GridCoordinates coordinates)
     {
-        var gridField = Fields[field.Column, field.Row];
+        var gridField = Fields[coordinates.Column, coordinates.Row];
 
         if (gridField.Ship == null)
         {
@@ -64,10 +64,10 @@ public sealed class Grid : IGrid
 
     private GridField RandomGridField()
     {
-        var column = _random.Next(1, Size + 1);
-        var row = _random.Next(1, Size + 1);
+        var column = _random.Next(0, Size);
+        var row = _random.Next(0, Size);
 
-        return new GridField(column, row);
+        return new GridField(new GridCoordinates(column, row));
     }
 
     private void SetShipAt(IShip ship, GridField startField, bool horizontal)
@@ -95,11 +95,11 @@ public sealed class Grid : IGrid
     }
 
     private static int ColumnFor(GridField startField, bool horizontal, int index) => 
-        horizontal ? index : startField.Column;
+        horizontal ? index : startField.Coordinates.Column;
 
     private static int RowFor(GridField startField, bool horizontal, int index) => 
-        horizontal ? startField.Row : index;
+        horizontal ? startField.Coordinates.Row : index;
 
     private static int StartIndexFor(GridField startField, bool horizontal) => 
-        horizontal ? startField.Column : startField.Row;
+        horizontal ? startField.Coordinates.Column : startField.Coordinates.Row;
 }

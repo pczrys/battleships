@@ -1,4 +1,7 @@
-﻿namespace Battleships.UserInterface;
+﻿using Battleships.Domain;
+using Battleships.Domain.GameGrid;
+
+namespace Battleships.UserInterface;
 
 public static class InputExtensions
 {
@@ -12,7 +15,7 @@ public static class InputExtensions
         return input == "Y";
     }
 
-    public static (char Column, int Row)? AsCoordinates(this string? input)
+    public static Coordinates? AsCoordinates(this string? input)
     {
         if (input == null || input.Length < 2)
             return null;
@@ -22,6 +25,6 @@ public static class InputExtensions
         if (!int.TryParse(input[1..], out var row))
             return null;
 
-        return (col, row);
+        return new Coordinates(col, row);
     }
 }
